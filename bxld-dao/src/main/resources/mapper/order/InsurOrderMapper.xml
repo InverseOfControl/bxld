@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymkj.bxld.dao.order.impl.InsurOrderDaoImpl">
+    <resultMap id="BaseResultMap" type="com.ymkj.bxld.domain.order.InsurOrderVO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="order_code" jdbcType="VARCHAR" property="orderCode"/>
+        <result column="apply_user_account" jdbcType="VARCHAR" property="applyUserAccount"/>
+        <result column="company_code" jdbcType="VARCHAR" property="companyCode"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="consumer_type" jdbcType="VARCHAR" property="consumerType"/>
+        <result column="contract_city" jdbcType="VARCHAR" property="contractCity"/>
+        <result column="consumer_name" jdbcType="VARCHAR" property="consumerName"/>
+        <result column="consumer_id_card" jdbcType="VARCHAR" property="consumerIdCard"/>
+        <result column="enterprise_name" jdbcType="VARCHAR" property="enterpriseName"/>
+        <result column="enterprise_licence" jdbcType="VARCHAR" property="enterpriseLicence"/>
+        <result column="consumer_phone" jdbcType="VARCHAR" property="consumerPhone"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="receive_address" jdbcType="VARCHAR" property="receiveAddress"/>
+        <result column="plate_number" jdbcType="VARCHAR" property="plateNumber"/>
+        <result column="attachment_num" jdbcType="INTEGER" property="attachmentNum"/>
+        <result column="apply_time" jdbcType="VARCHAR" property="applyTime"/>
+        <result column="auditing_time" jdbcType="VARCHAR" property="auditingTime"/>
+        <result column="sign_time" jdbcType="VARCHAR" property="signTime"/>
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="company_short_name" jdbcType="VARCHAR" property="companyShortName"/>
+        <result column="company_full_name" jdbcType="VARCHAR" property="companyFullName"/>
+        <result column="pay_card_name" jdbcType="VARCHAR" property="payCardName"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="order_quoted_price" jdbcType="DECIMAL" property="orderQuotedPrice"/>
+        <result column="makeup_file" jdbcType="VARCHAR" property="makeupFile"/>
+        <result column="application_progress" jdbcType="VARCHAR" property="applicationProgress"/>
+        <result column="apply_user_name" jdbcType="VARCHAR" property="applyUserName"/>
+
+
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        id , order_code, apply_user_account, company_code, company_name, consumer_type, contract_city,
+        consumer_name, consumer_id_card, enterprise_name, enterprise_licence, consumer_phone,telephone,receive_address,
+        plate_number,attachment_num,apply_time,auditing_time,sign_time,order_status,create_time,status,remark,makeup_file
+    </sql>
+
+
+    <!--查询订单列表-->
+    <select id="listPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        insur_order r
+        WHERE 1=1
+        <if test="orderCode != null and orderCode != '' ">
+            AND r.order_code = #{orderCode}
+        </if>
+        <if test="consumerName != null and consumerName != '' ">
+            AND r.consumer_name = #{consumerName}
+        </if>
+        <if test="applyUserAccount != null and applyUserAccount != '' ">
+            AND r.apply_user_account = #{applyUserAccount}
+        </if>
+        <if test="plateNumber != null and plateNumber != '' ">
+            AND r.plate_number = #{plateNumber}
+        </if>
+        <if test="orderStatus != null and orderStatus != '' ">
+            AND r.order_status = #{orderStatus}
+        </if>
+        <if test="queryStartDate != null and queryStartDate != '' ">
+            AND r.create_time <![CDATA[  > ]]> #{queryStartDate}
+        </if>
+        <if test="queryEndDate != null and queryEndDate != '' ">
+            AND r.create_time <![CDATA[  < ]]> #{queryEndDate}
+        </if>
+    </select>
+
+    <select id="countByPageParam" resultType="Integer" parameterType="java.util.Map">
+        SELECT
+        COUNT(*)
+        FROM(
+            SELECT
+            <include refid="Base_Column_List"/>
+            FROM
+            insur_order r
+            WHERE 1=1
+            <if test="orderCode != null and orderCode != '' ">
+                AND r.order_code = #{orderCode}
+            </if>
+            <if test="consumerName != null and consumerName != '' ">
+                AND r.consumer_name = #{consumerName}
+            </if>
+            <if test="applyUserAccount != null and applyUserAccount != '' ">
+                AND r.apply_user_account = #{applyUserAccount}
+            </if>
+            <if test="plateNumber != null and plateNumber != '' ">
+                AND r.plate_number = #{plateNumber}
+            </if>
+            <if test="orderStatus != null and orderStatus != '' ">
+                AND r.order_status = #{orderStatus}
+            </if>
+            <if test="queryStartDate != null and queryStartDate != '' ">
+                AND r.create_time <![CDATA[  > ]]> #{queryStartDate}
+            </if>
+            <if test="queryEndDate != null and queryEndDate != '' ">
+                AND r.create_time <![CDATA[  < ]]> #{queryEndDate}
+            </if>)lt
+
+    </select>
+
+    <select id="getOrderApplicationList" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        r.id , 
+        r.order_code, 
+        r.apply_user_account, 
+        r.company_code, 
+        r.company_name, 
+        r.consumer_type, 
+        r.contract_city,
+        r.consumer_name,
+        concat(substr(consumer_id_card,1,6),'****',substr(consumer_id_card,-6,6)) as consumer_id_card,
+        r.enterprise_name, 
+        r.enterprise_licence, 
+        r.consumer_phone,
+        r.telephone,
+        r.receive_address,
+        r.plate_number,
+        r.attachment_num,
+        r.apply_time,
+        r.auditing_time,
+        r.sign_time,
+        r.order_status,
+        r.create_time,
+        r.status,
+        r.remark,
+        r.makeup_file,
+        substr(order_status,1,3) as application_progress,
+        u.user_name as apply_user_name
+        FROM
+        insur_order r 
+        left join insur_user_info u on u.login_account = r.apply_user_account
+        WHERE r.apply_user_account = #{applyUserAccount} and order_status != 'YCX-YGB'
+        <if test="orderStatus != null and orderStatus != ''">
+            AND r.order_status like concat(#{orderStatus},'%')
+        </if>
+        <if test="consumerName != null and consumerName != ''">
+            AND r.consumer_name like concat('%', #{consumerName},'%')
+        </if>
+
+    </select>
+
+    <select id="getOrderApplicationListCount" resultType="Integer" parameterType="java.util.Map">
+       select count(*) from ( SELECT 
+        r.id , 
+        r.order_code, 
+        r.apply_user_account, 
+        r.company_code, 
+        r.company_name, 
+        r.consumer_type, 
+        r.contract_city,
+        r.consumer_name,
+        concat(substr(consumer_id_card,1,6),'****',substr(consumer_id_card,-6,6)) as consumer_id_card,
+        r.enterprise_name, 
+        r.enterprise_licence, 
+        r.consumer_phone,
+        r.telephone,
+        r.receive_address,
+        r.plate_number,
+        r.attachment_num,
+        r.apply_time,
+        r.auditing_time,
+        r.sign_time,
+        r.order_status,
+        r.create_time,
+        r.status,
+        r.remark,
+        r.makeup_file,
+        substr(order_status,1,3) as application_progress,
+        u.user_name as apply_user_name
+        FROM
+        insur_order r 
+        left join insur_user_info u on u.login_account = r.apply_user_account
+        WHERE r.apply_user_account = #{applyUserAccount} and order_status != 'YCX-YGB'
+        <if test="orderStatus != null and orderStatus != ''">
+            AND r.order_status like concat(#{orderStatus},'%')
+        </if>
+        <if test="consumerName != null and consumerName != ''">
+            AND r.consumer_name like concat('%', #{consumerName},'%')
+        </if>)lt
+
+    </select>
+
+    <!--根据订单号查询订单-->
+    <select id="findOne" resultMap="BaseResultMap" parameterType="com.ymkj.bxld.domain.order.InsurOrderVO">
+        SELECT
+        r.*,
+        company.company_short_name,
+        company.company_full_name,
+        company.pay_card_name,
+        company.card_number,
+        price.order_quoted_price
+        FROM
+        insur_order r
+        LEFT JOIN
+        insur_company_info company
+        ON
+        company.company_code = r.company_code
+        LEFT JOIN
+        insur_quoted_price price
+        ON
+        price.order_code = r.order_code AND price.status='0'
+        WHERE 1=1
+        <if test="orderCode != null">
+            AND r.order_code = #{orderCode}
+        </if>
+
+        <if test="id != null">
+            AND r.id = #{id}
+        </if>
+    </select>
+
+    <update id="updateOrder" parameterType="com.ymkj.bxld.domain.order.InsurOrderVO">
+        update
+        insur_order r
+
+        <set>
+            <if test="signTime != null">
+                r.sign_time = #{signTime},
+            </if>
+            <if test="orderStatus != null">
+                r.order_status = #{orderStatus},
+            </if>
+            <if test="companyCode != null">
+                r.company_code = #{companyCode},
+            </if>
+            <if test="status != null">
+                r.status = #{status},
+            </if>
+            <if test="auditingTime != null">
+                r.auditing_time = #{auditingTime},
+            </if>
+            <if test="makeupFile != null">
+                r.makeup_file = #{makeupFile},
+            </if>
+            <if test="remark != null">
+                r.remark = #{remark},
+            </if>
+        </set>
+        where
+        r.order_code = #{orderCode}
+    </update>
+
+    <!--插入订单信息-->
+    <insert id="insertOrder" parameterType="com.ymkj.bxld.domain.order.InsurOrderDO">
+        insert into
+            insur_order
+            (order_code, apply_user_account, company_code, company_name, consumer_type, contract_city,
+            consumer_name, consumer_id_card, enterprise_name, enterprise_licence, consumer_phone,telephone,receive_address,
+            plate_number,attachment_num,apply_time,auditing_time,sign_time,order_status,create_time,status,remark,makeup_file)
+        values
+            (#{orderCode}, #{applyUserAccount}, #{companyCode},#{companyName},#{consumerType},#{contractCity},
+            #{consumerName},#{consumerIdCard},#{enterpriseName},#{enterpriseLicence}, #{consumerPhone}, #{telephone},#{receiveAddress},
+            #{plateNumber},#{attachmentNum},#{applyTime},#{auditingTime},#{signTime},#{orderStatus}, #{createTime}, #{status},#{remark},#{makeupFile})
+    </insert>
+
+
+
+</mapper>

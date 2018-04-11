@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymkj.bxld.dao.order.impl.InsurCompanyInfoDaoImpl">
+  <resultMap id="BaseResultMap" type="com.ymkj.bxld.domain.order.InsurCompanyInfoDO">
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="company_code" jdbcType="VARCHAR" property="companyCode" />
+    <result column="company_short_name" jdbcType="VARCHAR" property="companyShortName" />
+    <result column="company_full_name" jdbcType="VARCHAR" property="companyFullName" />
+    <result column="company_telephone" jdbcType="VARCHAR" property="companyTelephone" />
+    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
+    <result column="pay_card_name" jdbcType="VARCHAR" property="payCardName" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+
+</mapper>

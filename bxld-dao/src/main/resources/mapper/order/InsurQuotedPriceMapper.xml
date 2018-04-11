@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymkj.bxld.dao.order.impl.InsurQuotedPriceDaoImpl">
+    <resultMap id="BaseResultMap" type="com.ymkj.bxld.domain.order.InsurQuotedPriceVO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="order_code" jdbcType="VARCHAR" property="orderCode"/>
+        <result column="auditing_user_code" jdbcType="VARCHAR" property="auditingUserCode"/>
+        <result column="company_code" jdbcType="VARCHAR" property="companyCode"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="order_quoted_price" jdbcType="DECIMAL" property="orderQuotedPrice"/>
+        <result column="recommend_grade" jdbcType="VARCHAR" property="recommendGrade"/>
+        <result column="ctali_start_time" jdbcType="VARCHAR" property="ctaliStartTime"/>
+        <result column="ctali_end_time" jdbcType="VARCHAR" property="ctaliEndTime"/>
+        <result column="business_start_time" jdbcType="VARCHAR" property="businessStartTime"/>
+        <result column="business_end_time" jdbcType="VARCHAR" property="businessEndTime"/>
+        <result column="confirm_status" jdbcType="VARCHAR" property="confirmStatus"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+
+        <result column="attachment_id" jdbcType="VARCHAR" property="attachmentId"/>
+    </resultMap>
+
+    <insert id="insertInsurQuotedPrice" parameterType="com.ymkj.bxld.domain.order.InsurQuotedPriceDO">
+    insert into
+        insur_quoted_price
+        (order_code, auditing_user_code, company_code,company_name, order_quoted_price, recommend_grade,ctali_start_time,ctali_end_time,business_start_time,
+        business_end_time,confirm_status,create_time,status,remark)
+    values
+        (#{orderCode}, #{auditingUserCode}, #{companyCode},#{companyName},#{orderQuotedPrice},#{recommendGrade},#{ctaliStartTime},#{ctaliEndTime},#{businessStartTime},
+        #{businessEndTime},#{confirmStatus},#{createTime},#{status},#{remark})
+  </insert>
+
+    <!--查询报价信息和报价附件-->
+    <select id="findOrdeOfferInfo" resultMap="BaseResultMap" parameterType="com.ymkj.bxld.domain.order.InsurQuotedPriceVO">
+        SELECT
+            p.*,
+            t.attachment_id
+        FROM
+          insur_quoted_price p
+        LEFT JOIN insur_order_attachment t ON p.order_code = t.order_code
+        WHERE p.status = '0'
+          AND t.id IN (
+            SELECT
+            MAX(id)
+            FROM
+            insur_order_attachment
+            WHERE
+            bussiness_type = 'BJ'
+            GROUP BY
+            order_code
+          )
+        AND p.order_code = #{orderCode}
+    </select>
+
+    <update id="updateInsurQuotedPrice" parameterType="com.ymkj.bxld.domain.order.InsurQuotedPriceVO">
+        update
+        insur_quoted_price price
+        <set>
+            <if test="status != null">
+                price.status = #{status},
+            </if>
+        </set>
+        where
+        price.order_code = #{orderCode}
+        AND price.status = '0'
+    </update>
+
+
+</mapper>

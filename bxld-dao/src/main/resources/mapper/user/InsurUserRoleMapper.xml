@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymkj.bxld.dao.user.impl.InsurUserRoleDaoImpl">
+  <resultMap id="BaseResultMap" type="com.ymkj.bxld.domain.user.InsurUserRole">
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+    <result column="login_account" jdbcType="VARCHAR" property="loginAccount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  
+  <insert id="insert" parameterType="com.ymkj.bxld.domain.user.InsurUserRole"> 
+  	INSERT INTO insur_user_role (role_code, login_account, create_time, status, remark) 
+  	VALUES (#{roleCode}, #{loginAccount}, #{createTime}, #{status}, #{remark});
+  </insert>
+  
+  <delete id="deleteByLoginAccount" parameterType="String" >
+  	delete from insur_user_role where login_account = #{loginAccount} and role_code = "S"
+  </delete>
+  
+</mapper>

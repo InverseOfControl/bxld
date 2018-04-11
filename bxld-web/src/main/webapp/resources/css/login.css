@@ -1,0 +1,117 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{ 
+	padding: 0px;
+	margin: auto;
+	FONT: 12px/1.6em "微软雅黑";
+	text-align:center;
+	background-color:#2d94d9;
+	color:#000;
+	position:relative;
+	}
+
+table{ font-size:12px; color:#666;}
+input{ font-size:12px; color:#acacac; padding:10px; border:0px; width:210px; background-color:#ededed; border:1px solid #cfcfcf;}
+
+#layout{
+	width:920px;
+	margin:0 auto;
+	position:relative;
+	}
+.login_img{
+	width:100%;
+	position: absolute;
+	bottom:0px;
+	left:0px;
+	}
+.layout_img {
+	position: absolute;/*--绝对定位--*/
+	top: 55px;
+	left: 0px;
+	width: 450px;	
+	float:left;
+	text-align:left;
+	color:#ffffff;
+} 
+.login {
+	position: absolute;/*--绝对定位--*/
+	top: 120px;
+	right: 20px;
+	width: 320px;	
+	float:left;
+	text-align:left;
+	color:#ffffff;
+	background-color:#ffffff;
+	border-radius:5px;
+} 
+.login_tit {
+	color:#2d94d9;
+	font-size:18px;
+	font-weight:bold;
+	text-align:center;
+} 
+.login_sk1 {
+	position: absolute;/*--绝对定位--*/
+	top: 192px;
+	left: 642px;
+	width: 460px;	
+	float:left;
+	text-align:left;
+	color:#ffffff;
+} 
+.login_sk2 {
+	position: absolute;/*--绝对定位--*/
+	top: 250px;
+	left: 642px;
+	width: 460px;	
+	float:left;
+	text-align:left;
+	color:#ffffff;
+} 
+.login_sk3 {
+	position: absolute;/*--绝对定位--*/
+	top: 302px;
+	left: 592px;
+	width: 460px;	
+	float:left;
+	text-align:left;
+	color:#ffffff;
+} 
+.login_sk4 {
+	position: absolute;/*--绝对定位--*/
+	top: 343px;
+	left: 642px;
+	width: 460px;	
+	float:left;
+	text-align:left;
+	color:#ffffff;
+} 
+.login_sk5 {
+	position: absolute;/*--绝对定位--*/
+	top: 391px;
+	left: 592px;
+	width: 460px;	
+	float:left;
+	text-align:left;
+	color:#ffffff;
+} 
+.btn_login{
+	background-color:#2d94d9;
+		height:38px;
+		width:275px;
+		border:0px;
+		padding:2px 8px 0px 8px;
+		margin-right:5px;
+		font-size:12px;
+		font-weight:bold;
+		color:#fff;
+}
+.font_01 {
+	color: #ffffff; 
+	font-size:12px;
+}
+a:link {color: #ffffff; text-decoration: none;}     /* 未访问的链接 */
+a:visited {color: #ffffff; text-decoration: none;}  /* 已访问的链接 */
+a:hover {color: #ffffff; text-decoration:underline;}    /* 当有鼠标悬停在链接上 */
+a:active {color: #ffffff; text-decoration: none;}   /* 被选择的链接 */

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymkj.bxld.dao.attachment.impl.AttachmentDaoImpl">
+
+    <!-- 插入附件表 -->
+    <insert id="insertAttachment" parameterType="com.ymkj.bxld.domain.attachment.AttchmentVO"
+            useGeneratedKeys="true" keyProperty="id">
+		insert into insur_attachment(attachment_type,old_attachment_name,attachment_url,new_attachment_name,create_time,status)
+		values(#{attachmentType},#{oldAttachmentName},#{attachmentUrl},#{newAttachmentName},now(),'0')
+	</insert>
+
+    <!-- 插入附件订单关系表 -->
+    <insert id="insertOrderAttachment" parameterType="com.ymkj.bxld.domain.attachment.AttchmentVO">
+		insert into insur_order_attachment(order_code,bussiness_type,attachment_id,create_time,status)
+		values(#{orderCode},#{bussinessType},#{id},now(),'0')
+	</insert>
+
+    <!-- 获取文件信息 -->
+    <select id="getFileInfo" parameterType="com.ymkj.bxld.domain.attachment.AttchmentVO" resultType="java.util.Map">
+        select t.*,ia.attachment_url from (
+        select id ,order_code,attachment_id,bussiness_type from insur_order_attachment where order_code=#{orderCode}
+        <if test="status != null and status != '' ">
+            and status = #{status}
+        </if>
+        <if test="bussinessType != null and bussinessType != '' ">
+            and bussiness_type=#{bussinessType}
+        </if>
+        ) t
+        left join insur_attachment ia on t.attachment_id = ia.id
+    </select>
+
+    <!-- 通过附件ID获取附件地址 -->
+    <select id="getFilePathById" parameterType="java.lang.String" resultType="java.lang.String">
+		select attachment_url from insur_attachment where id = #{id}
+	</select>
+
+
+    <!--更新附件-->
+    <update id="updateFileInfo" parameterType="com.ymkj.bxld.domain.order.InsurOrderVO">
+        update
+        insur_order_attachment t
+        <set>
+            <if test="status != null">
+                t.status = #{status},
+            </if>
+        </set>
+        where t.status = '0'
+        AND t.order_code = #{orderCode}
+        <if test="bussinessType != null">
+            AND t.bussiness_type = #{bussinessType}
+        </if>
+    </update>
+
+    <!--订单处理更新历史附件信息-->
+    <update id="updateHistoryFileInfo" parameterType="java.util.Map">
+        update
+        insur_order_attachment t
+        <set>
+            <if test="attchmentVO.status != null and attchmentVO.status != '' ">
+                t.status = #{attchmentVO.status},
+            </if>
+        </set>
+        where t.status = '0'
+        <if test="attchmentVO.orderCode != null and attchmentVO.orderCode != '' ">
+            AND t.order_code = #{attchmentVO.orderCode}
+        </if>
+
+        <if test="attchmentVO.bussinessType != null and attchmentVO.bussinessType != '' ">
+            AND t.bussiness_type = #{attchmentVO.bussinessType}
+        </if>
+        <if test="ids != null and ids != '' ">
+            AND t.id NOT IN
+            <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+    </update>
+    
+    <!-- 导出的用户信息 -->
+    <select id="exportUserInfo" parameterType="java.util.List" resultType="java.util.Map">
+		select order_code,company_name,plate_number,consumer_name FROM insur_order where 1=1 and order_code in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+        </foreach>  
+	</select>
+</mapper>

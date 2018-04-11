@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymkj.bxld.dao.weixin.impl.WXUserInfoDaoImpl">
+	
+	<!-- 查看微信公众号关注用户是否认证过 -->
+	<select id="userIfAuth" parameterType="com.ymkj.bxld.domain.user.InsurUserInfo" resultType="java.util.Map">
+		select * from insur_user_info where open_id = #{openId}
+	</select>
+	
+	<!-- 查看认证用户是否是公司内部员工 -->
+	<select id="userIfInCompany" parameterType="com.ymkj.bxld.domain.user.InsurUserInfo" resultType="int">
+		select count(*) from insur_user_info where user_name=#{userName} and id_card=#{idCard}
+	</select>
+	
+	<!-- 保存微信用户认证信息 -->
+	<update id="saveWXUserInfo" parameterType="com.ymkj.bxld.domain.user.InsurUserInfo">
+		insert into insur_user_info(
+		login_account,login_pwd,user_name,id_card,invite_code,area,sex,phone_no,create_time,open_id,nick_name,head_img_url,status,authentication_state) values(
+		#{inviteCode},#{loginPwd},#{userName},#{idCard},#{inviteCode},#{area},#{sex},#{phoneNo},now(),#{openId},#{nickName},#{headImgUrl},'0','0')
+	</update>
+</mapper>

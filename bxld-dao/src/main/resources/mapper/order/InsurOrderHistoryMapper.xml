@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymkj.bxld.dao.order.impl.InsurOrderHistroyDaoImpl">
+    <resultMap id="BaseResultMap" type="com.ymkj.bxld.domain.order.InsurOrderHistory">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="order_code" jdbcType="VARCHAR" property="orderCode"/>
+        <result column="opt_type" jdbcType="VARCHAR" property="optType"/>
+        <result column="auditing_login_user" jdbcType="VARCHAR" property="auditingLoginUser"/>
+        <result column="auditing_user_name" jdbcType="VARCHAR" property="auditingUserName"/>
+        <result column="auditing_status" jdbcType="VARCHAR" property="auditingStatus"/>
+        <result column="auditing_result" jdbcType="VARCHAR" property="auditingResult"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <insert id="insertOrderHistory" parameterType="com.ymkj.bxld.domain.order.InsurOrderHistory">
+        insert into
+        insur_order_history
+        (order_code, opt_type, auditing_login_user,auditing_user_name, auditing_status, auditing_result,create_time,status,remark)
+        values
+        (#{orderCode}, #{optType}, #{auditingLoginUser},#{auditingUserName},#{auditingStatus},#{auditingResult},#{createTime},#{status},#{remark})
+    </insert>
+
+</mapper>
